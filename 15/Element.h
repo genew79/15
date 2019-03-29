@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Element.h"
 
-class Field : public sf::Drawable, public sf::Transformable
+class Element : public sf::Drawable, public sf::Transformable
 {
 protected:
-	std::vector<Element> elements;
+	int value;
 public:
-	Field();
-	~Field();
+	Element(int val);
+	~Element();
+	void SetPosition();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
+

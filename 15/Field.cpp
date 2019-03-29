@@ -2,6 +2,11 @@
 
 Field::Field()
 {
+	for (int i = 1; i < 16; i++)
+	{
+		Element elem(i);
+		elements.push_back(elem);
+	}
 }
 
 Field::~Field()
