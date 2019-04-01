@@ -2,9 +2,10 @@
 
 Field::Field()
 {
-	for (int i = 1; i < 16; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		Element elem(i);
+		elem.SetPosition(sf::Vector2f(i % 4 * 120.f + 10.f, i / 4 * 120.f + 10.f));
 		elements.push_back(elem);
 	}
 }
@@ -18,20 +19,20 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	sf::RectangleShape shape(sf::Vector2f(500.f, 500.f));
 	states.transform *= getTransform();
 	shape.setOutlineThickness(2.f);
-	shape.setOutlineColor(sf::Color(200, 200, 200));
+	shape.setOutlineColor(sf::Color(200, 100, 200));
 	shape.setFillColor(sf::Color::Transparent);
 	target.draw(shape, states);
-
-	shape.setSize(sf::Vector2f(120.f, 120.f));
-	shape.setOutlineThickness(2.f);
-	shape.setOutlineColor(sf::Color(200, 200, 200));
-	shape.setFillColor(sf::Color::Transparent);
-	for (int y = 0; y < 4; y++)
+	for (unsigned int i = 0; i < elements.size(); i++)
 	{
-		for (int x = 0; x < 4; x++)
-		{
-			shape.setPosition(x * 120.f + 10.f, y * 120.f + 10.f);
-			if(x != rand() % 4 || y != rand() % 4) target.draw(shape, states);
-		}
+		elements[i].draw(target, states);
 	}
+}
+
+sf::Vector2i Field::GetEmptyPos()
+{
+	for (unsigned int i = 0; i < elements.size(); i++)
+	{
+		if (elements[i].Value() == 0) return sf::Vector2i(i % 4, i / 4);
+	}
+	return sf::Vector2i(-1, -1);
 }

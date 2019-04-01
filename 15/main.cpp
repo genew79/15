@@ -1,8 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include "Assets.h"
 #include "Field.h"
 
 int main()
 {
+	Assets& assets = Assets::Instance();
+	assets.Load();
+
 	sf::VideoMode fullscreenMode = sf::VideoMode::getFullscreenModes()[0];
 
 	//	sf::RenderWindow window(fullscreenMode, "SFML works!", sf::Style::Fullscreen);
@@ -10,18 +14,8 @@ int main()
 
 	window.setFramerateLimit(60);
 
-	sf::Vector2f spritePosition(0.0f, 0.0f);
-
-	sf::Texture texture;
-	sf::Font font;
-	if (!texture.loadFromFile("tile.png")) return -1;
-	if (!font.loadFromFile("calibri.ttf")) return -1;
-
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-
 	sf::Text text;
-	text.setFont(font);
+	text.setFont(assets.font);
 	text.setString(std::to_string(fullscreenMode.width) + " x " + std::to_string(fullscreenMode.height));
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Red);

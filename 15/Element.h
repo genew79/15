@@ -5,10 +5,12 @@ class Element : public sf::Drawable, public sf::Transformable
 {
 protected:
 	int value;
+	sf::Vector2f position;
 public:
 	Element(int val);
 	~Element();
-	void SetPosition();
+	void SetPosition(sf::Vector2f pos);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	int Value() { return value; };
 };
 

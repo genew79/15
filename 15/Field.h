@@ -10,4 +10,5 @@ public:
 	Field();
 	~Field();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	sf::Vector2i GetEmptyPos();
 };
