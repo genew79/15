@@ -6,6 +6,7 @@ class Element : public sf::Drawable, public sf::Transformable
 protected:
 	int value;
 	sf::Vector2f position;
+	sf::Color color;
 public:
 	Element(int val);
 	~Element();
