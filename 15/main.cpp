@@ -54,7 +54,11 @@ int main()
 			if (event.type == sf::Event::MouseMoved)
 			{
 				sf::Vector2i position = sf::Mouse::getPosition(window);
-				text.setString("Mouse pos: " + std::to_string(position.x) + ", " + std::to_string(position.y));
+				std::string str;
+				str = "Mouse pos: " + std::to_string(position.x) + ", " + std::to_string(position.y);
+				str += "\n Field position: " + std::to_string(field.getPosition().x) + ", " + std::to_string(field.getPosition().y);
+				str += "\n Cell index: " + std::to_string(field.GetElementIndex(position));
+				text.setString(str);
 				field.MouseMove(position);
 			}
 

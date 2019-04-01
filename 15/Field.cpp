@@ -6,13 +6,33 @@ Field::Field()
 	for (int i = 0; i < 16; i++)
 	{
 		Element elem(i);
-		elem.SetPosition(sf::Vector2f(i % 4 * 120.f + 10.f, i / 4 * 120.f + 10.f));
+		elem.SetPosition(GetElementPosition(i));
 		elements.push_back(elem);
 	}
 }
 
 Field::~Field()
 {
+}
+
+void Field::SetSize(sf::Vector2i sz)
+{
+	size = sz;
+	cell_size = sf::Vector2i(120, 120);
+}
+
+sf::Vector2f Field::GetElementPosition(int index)
+{
+	return sf::Vector2f(index % 4 * 120.f + 10.f, index / 4 * 120.f + 10.f);
+}
+
+int Field::GetElementIndex(sf::Vector2i position)
+{
+	if (position.x < (int)getPosition().x + 10) return -1;
+	if (position.y < (int)getPosition().y + 10) return -1;
+	if (position.x >= (int)getPosition().x + 10 + 120 * 4) return -1;
+	if (position.y >= (int)getPosition().y + 10 + 120 * 4) return -1;
+	return (position.y - (int)getPosition().y - 10) / 120 * 4 + (position.x - (int)getPosition().x - 10) / 120;
 }
 
 void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -55,12 +75,16 @@ void Field::SwapElements(int index1, int index2)
 		Element tmp = elements[index1];
 		elements[index1] = elements[index2];
 		elements[index2] = tmp;
-		elements[index1].SetPosition(sf::Vector2f(index1 % 4 * 120.f + 10.f, index1 / 4 * 120.f + 10.f));
-		elements[index2].SetPosition(sf::Vector2f(index2 % 4 * 120.f + 10.f, index2 / 4 * 120.f + 10.f));
+		elements[index1].SetPosition(GetElementPosition(index1));
+		elements[index2].SetPosition(GetElementPosition(index2));
 	}
 }
 
 void Field::MouseMove(sf::Vector2i pos)
 {
-
+	int index = GetElementIndex(pos);
+	if (index >= 0)
+	{
+		elements[index].Hightlight(true);
+	}
 }
