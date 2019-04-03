@@ -100,7 +100,7 @@ bool Field::Check() const
 {
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
-		if (elements[i].Value() != i + 1) return false;
+		if (elements[i].Value() > 0 && elements[i].Value() != i + 1) return false;
 	}
 	return true;
 }
@@ -130,9 +130,9 @@ bool Field::IsDirectionPossible(Field::Direction direction)
 	int empty_index = GetEmptyIndex();
 	int col = empty_index % 4;
 	int row = empty_index / 4;
-	if (direction == Field::Left && col < 3 ||
+	return
+		direction == Field::Left && col < 3 ||
 		direction == Field::Right && col > 0 ||
 		direction == Field::Up && row < 3 ||
-		direction == Field::Down && row > 0) return true;
-	else return false;
+		direction == Field::Down && row > 0;
 }

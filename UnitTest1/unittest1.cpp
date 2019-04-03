@@ -9,6 +9,12 @@ namespace UnitTest1
 	{
 	public:
 		
+		TEST_METHOD(TestCheckElements)
+		{
+			Field field;
+			Assert::AreEqual(field.Check(), true);
+		}
+
 		TEST_METHOD(TestGetElementIndex)
 		{
 			Field field;
