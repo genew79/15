@@ -6,7 +6,7 @@ class Field : public sf::Drawable, public sf::Transformable
 {
 protected:
 	sf::Vector2i size;
-	sf::Vector2i cell_size;
+	int cell_size = 120;
 	std::vector<Element> elements;
 	sf::Color color;
 public:
@@ -18,8 +18,11 @@ public:
 	sf::Vector2f GetElementPosition(int index);
 	int GetElementIndex(sf::Vector2i position);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	sf::Vector2i GetEmptyPos();
+	int GetEmptyIndex() const;
 	void Move(Direction direction);
 	void SwapElements(int index1, int index2);
+	bool Check() const;
 	void MouseMove(sf::Vector2i pos);
+	std::vector<int> GetSwapIndexes();
+	bool IsDirectionPossible(Field::Direction dir);
 };

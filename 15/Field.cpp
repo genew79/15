@@ -3,12 +3,15 @@
 Field::Field()
 {
 	color = sf::Color(200, 100, 200);
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		Element elem(i);
+		Element elem(i + 1);
 		elem.SetPosition(GetElementPosition(i));
 		elements.push_back(elem);
 	}
+	Element elem(0);
+	elem.SetPosition(GetElementPosition(15));
+	elements.push_back(elem);
 }
 
 Field::~Field()
@@ -18,21 +21,20 @@ Field::~Field()
 void Field::SetSize(sf::Vector2i sz)
 {
 	size = sz;
-	cell_size = sf::Vector2i(120, 120);
 }
 
 sf::Vector2f Field::GetElementPosition(int index)
 {
-	return sf::Vector2f(index % 4 * 120.f + 10.f, index / 4 * 120.f + 10.f);
+	return sf::Vector2f(index % 4 * cell_size + 10.f, index / 4 * cell_size + 10.f);
 }
 
 int Field::GetElementIndex(sf::Vector2i position)
 {
 	if (position.x < (int)getPosition().x + 10) return -1;
 	if (position.y < (int)getPosition().y + 10) return -1;
-	if (position.x >= (int)getPosition().x + 10 + 120 * 4) return -1;
-	if (position.y >= (int)getPosition().y + 10 + 120 * 4) return -1;
-	return (position.y - (int)getPosition().y - 10) / 120 * 4 + (position.x - (int)getPosition().x - 10) / 120;
+	if (position.x >= (int)getPosition().x + 10 + cell_size * 4) return -1;
+	if (position.y >= (int)getPosition().y + 10 + cell_size * 4) return -1;
+	return (position.y - (int)getPosition().y - 10) / cell_size * 4 + (position.x - (int)getPosition().x - 10) / cell_size;
 }
 
 void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -43,28 +45,42 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	shape.setOutlineColor(color);
 	shape.setFillColor(sf::Color::Transparent);
 	target.draw(shape, states);
-	for (unsigned int i = 0; i < elements.size(); i++) elements[i].draw(target, states);
+	bool check = Check();
+	for (unsigned int i = 0; i < elements.size(); i++)
+	{
+		if(check) ((Element&)elements[i]).SetColor(sf::Color::Cyan, sf::Color::Cyan);
+		else if (elements[i].Value() == i + 1)
+		{
+			((Element&)elements[i]).SetColor(sf::Color(200, 100, 200), sf::Color::Green);
+		}
+		else
+		{
+			((Element&)elements[i]).SetColor(sf::Color(200, 100, 200), sf::Color(200, 100, 200));
+		}
+		elements[i].draw(target, states);
+	}
 }
 
-sf::Vector2i Field::GetEmptyPos()
+int Field::GetEmptyIndex() const
 {
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
-		if (elements[i].Value() == 0) return sf::Vector2i(i % 4, i / 4);
+		if (elements[i].Value() == 0) return i;
 	}
-	return sf::Vector2i(-1, -1);
+	return -1;
 }
 
 void Field::Move(Direction direction)
 {
 	int move_index = -1;
-	sf::Vector2i empty_pos = GetEmptyPos();
-	int empty_index = empty_pos.y * 4 + empty_pos.x;
+	int empty_index = GetEmptyIndex();
+	int col = empty_index % 4;
+	int row = empty_index / 4;
 
-	if (direction == Field::Left && empty_pos.x < 3) move_index = empty_index + 1;
-	if (direction == Field::Right && empty_pos.x > 0) move_index = empty_index - 1;
-	if (direction == Field::Up && empty_pos.y < 3) move_index = empty_index + 4;
-	if (direction == Field::Down && empty_pos.y > 0) move_index = empty_index - 4;
+	if (direction == Field::Left && col < 3) move_index = empty_index + 1;
+	if (direction == Field::Right && col > 0) move_index = empty_index - 1;
+	if (direction == Field::Up && row < 3) move_index = empty_index + 4;
+	if (direction == Field::Down && row > 0) move_index = empty_index - 4;
 	SwapElements(empty_index, move_index);
 }
 
@@ -80,11 +96,43 @@ void Field::SwapElements(int index1, int index2)
 	}
 }
 
+bool Field::Check() const
+{
+	for (unsigned int i = 0; i < elements.size(); i++)
+	{
+		if (elements[i].Value() != i + 1) return false;
+	}
+	return true;
+}
+
 void Field::MouseMove(sf::Vector2i pos)
 {
 	int index = GetElementIndex(pos);
-	if (index >= 0)
-	{
-		elements[index].Hightlight(true);
-	}
+}
+
+std::vector<int> Field::GetSwapIndexes()
+{
+	std::vector<int> res;
+	int empty_index = GetEmptyIndex();
+	int col = empty_index % 4;
+	int row = empty_index / 4;
+
+	if (col < 3) res.push_back(empty_index + 1);
+	if (col > 0) res.push_back(empty_index - 1);
+	if (row < 3) res.push_back(empty_index + 4);
+	if (row > 0) res.push_back(empty_index - 4);
+
+	return res;
+}
+
+bool Field::IsDirectionPossible(Field::Direction direction)
+{
+	int empty_index = GetEmptyIndex();
+	int col = empty_index % 4;
+	int row = empty_index / 4;
+	if (direction == Field::Left && col < 3 ||
+		direction == Field::Right && col > 0 ||
+		direction == Field::Up && row < 3 ||
+		direction == Field::Down && row > 0) return true;
+	else return false;
 }
