@@ -1,29 +1,18 @@
+#include "Assets.h"
 #include "Field.h"
 
 Field::Field()
 {
 	color = sf::Color(200, 100, 200);
-	for (int i = 0; i < 15; i++)
-	{
-		Element elem(i + 1);
-		elem.SetPosition(GetElementPosition(i));
-		elements.push_back(elem);
-	}
-	Element elem(0);
-	elem.SetPosition(GetElementPosition(15));
-	elements.push_back(elem);
+	for (int i = 0; i < FIELD_SIZE - 1; i++) elements[i] = i + 1;
+	elements[FIELD_SIZE - 1] = 0;
 }
 
 Field::~Field()
 {
 }
 
-void Field::SetSize(sf::Vector2i sz)
-{
-	size = sz;
-}
-
-sf::Vector2f Field::GetElementPosition(int index)
+sf::Vector2f Field::GetElementPosition(int index) const
 {
 	return sf::Vector2f(index % 4 * cell_size + 10.f, index / 4 * cell_size + 10.f);
 }
@@ -39,33 +28,55 @@ int Field::GetElementIndex(sf::Vector2i position)
 
 void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	sf::Text text;
 	sf::RectangleShape shape(sf::Vector2f(1.f * size.x, 1.f * size.y));
 	states.transform *= getTransform();
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
 	shape.setFillColor(sf::Color::Transparent);
 	target.draw(shape, states);
+
 	bool check = Check();
-	for (unsigned int i = 0; i < elements.size(); i++)
+	shape.setSize(sf::Vector2f(118.f, 118.f));
+	shape.setOutlineThickness(2.f);
+	shape.setOutlineColor(color);
+	shape.setFillColor(sf::Color::Transparent);
+
+	text.setFont(Assets::Instance().font);
+	text.setCharacterSize(52);
+	text.setFillColor(color);
+
+	for (unsigned int i = 0; i < FIELD_SIZE; i++)
 	{
-		if(check) ((Element&)elements[i]).SetColor(sf::Color::Cyan, sf::Color::Cyan);
-		else if (elements[i].Value() == i + 1)
+		shape.setOutlineColor(color);
+		text.setFillColor(color);
+		text.setString(std::to_string(elements[i]));
+		if (check)
 		{
-			((Element&)elements[i]).SetColor(sf::Color(200, 100, 200), sf::Color::Green);
+			shape.setOutlineColor(sf::Color::Cyan);
+			text.setFillColor(sf::Color::Cyan);
 		}
-		else
+		else if (elements[i] == i + 1)
 		{
-			((Element&)elements[i]).SetColor(sf::Color(200, 100, 200), sf::Color(200, 100, 200));
+			text.setFillColor(sf::Color::Green);
 		}
-		elements[i].draw(target, states);
+
+		if (elements[i] > 0)
+		{
+			sf::Vector2f position = GetElementPosition(i);
+			shape.setPosition(position);
+			target.draw(shape, states);
+			text.setPosition(position.x + 30.f + (elements[i] < 10 ? 15.f : 0.f), position.y + 25.f);
+			target.draw(text, states);
+		}
 	}
 }
 
 int Field::GetEmptyIndex() const
 {
-	for (unsigned int i = 0; i < elements.size(); i++)
+	for (unsigned int i = 0; i < FIELD_SIZE; i++)
 	{
-		if (elements[i].Value() == 0) return i;
+		if (elements[i] == 0) return i;
 	}
 	return -1;
 }
@@ -88,19 +99,17 @@ void Field::SwapElements(int index1, int index2)
 {
 	if (index1 >= 0 && index2 >= 0)
 	{
-		Element tmp = elements[index1];
+		int tmp = elements[index1];
 		elements[index1] = elements[index2];
 		elements[index2] = tmp;
-		elements[index1].SetPosition(GetElementPosition(index1));
-		elements[index2].SetPosition(GetElementPosition(index2));
 	}
 }
 
 bool Field::Check() const
 {
-	for (unsigned int i = 0; i < elements.size(); i++)
+	for (unsigned int i = 0; i < FIELD_SIZE; i++)
 	{
-		if (elements[i].Value() > 0 && elements[i].Value() != i + 1) return false;
+		if (elements[i] > 0 && elements[i] != i + 1) return false;
 	}
 	return true;
 }

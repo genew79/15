@@ -24,9 +24,6 @@
     <ClInclude Include="..\15\Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\15\Element.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,9 +33,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\15\Field.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\15\Element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

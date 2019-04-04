@@ -7,26 +7,18 @@ int main()
 	Assets& assets = Assets::Instance();
 	assets.Load();
 
-	sf::VideoMode fullscreenMode = sf::VideoMode::getFullscreenModes()[0];
-
-	//	sf::RenderWindow window(fullscreenMode, "SFML works!", sf::Style::Fullscreen);
 	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
-
 	window.setFramerateLimit(60);
 
 	sf::Text text;
 	text.setFont(assets.font);
-	text.setString(std::to_string(fullscreenMode.width) + " x " + std::to_string(fullscreenMode.height));
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Red);
 	text.setPosition(0.f, 0.f);
 
-	sf::View view(sf::FloatRect(0.f, 0.f, 600.f, 600.f));
-
-	float xpos = 50.f, ypos = 50.f;
 	Field field;
-	field.setPosition(xpos, ypos);
 	field.SetSize(sf::Vector2i(500, 500));
+	field.setPosition(50.f, 50.f);
 
 	sf::Event event;
 	int counter = 100;
@@ -75,7 +67,6 @@ int main()
 			{
 				// update the view to the new size of the window
 				sf::FloatRect visibleArea(0.f, 0.f, 1.0f * event.size.width, 1.0f * event.size.height);
-				window.setView(sf::View(visibleArea));
 			}
 		}
 
