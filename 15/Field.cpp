@@ -105,26 +105,6 @@ bool Field::Check() const
 	return true;
 }
 
-void Field::MouseMove(sf::Vector2i pos)
-{
-	int index = GetElementIndex(pos);
-}
-
-std::vector<int> Field::GetSwapIndexes()
-{
-	std::vector<int> res;
-	int empty_index = GetEmptyIndex();
-	int col = empty_index % 4;
-	int row = empty_index / 4;
-
-	if (col < 3) res.push_back(empty_index + 1);
-	if (col > 0) res.push_back(empty_index - 1);
-	if (row < 3) res.push_back(empty_index + 4);
-	if (row > 0) res.push_back(empty_index - 4);
-
-	return res;
-}
-
 bool Field::IsDirectionPossible(Field::Direction direction)
 {
 	int empty_index = GetEmptyIndex();

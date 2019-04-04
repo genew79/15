@@ -22,7 +22,5 @@ public:
 	void Move(Direction direction);
 	void SwapElements(int index1, int index2);
 	bool Check() const;
-	void MouseMove(sf::Vector2i pos);
-	std::vector<int> GetSwapIndexes();
 	bool IsDirectionPossible(Field::Direction dir);
 };

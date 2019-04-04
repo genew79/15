@@ -64,7 +64,11 @@ int main()
 				str = "Mouse pos: " + std::to_string(position.x) + ", " + std::to_string(position.y);
 				str += "\n Cell index: " + std::to_string(field.GetElementIndex(position));
 				text.setString(str);
-				field.MouseMove(position);
+			}
+			if (event.type == sf::Event::MouseLeft)
+			{
+				sf::Vector2i position = sf::Mouse::getPosition(window);
+				int index = field.GetElementIndex(position);
 			}
 
 			if (event.type == sf::Event::Resized)
