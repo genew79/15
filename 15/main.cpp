@@ -7,7 +7,7 @@ int main()
 	Assets& assets = Assets::Instance();
 	assets.Load();
 
-	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(600, 600), "15");
 	window.setFramerateLimit(60);
 
 	sf::Text text;
@@ -23,7 +23,7 @@ int main()
 	sf::Event event;
 	int counter = 100;
 
-	std::vector<Field::Direction> log;
+	std::vector<Direction> log;
 
 	bool mode_solve = false;
 
@@ -42,10 +42,10 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::R && log.size() > 0) mode_solve = true;
 					if (event.key.code == sf::Keyboard::R && log.size() == 0) counter = 100;
-					if (event.key.code == sf::Keyboard::Left && field.IsDirectionPossible(Field::Left)) { log.push_back(Field::Left); field.Move(Field::Left); }
-					if (event.key.code == sf::Keyboard::Right && field.IsDirectionPossible(Field::Right)) { log.push_back(Field::Right); field.Move(Field::Right); }
-					if (event.key.code == sf::Keyboard::Up && field.IsDirectionPossible(Field::Up)) { log.push_back(Field::Up); field.Move(Field::Up); }
-					if (event.key.code == sf::Keyboard::Down && field.IsDirectionPossible(Field::Down)) { log.push_back(Field::Down); field.Move(Field::Down); }
+					if (event.key.code == sf::Keyboard::Left && field.IsDirectionPossible(Direction::Left)) { log.push_back(Direction::Left); field.Move(Direction::Left); }
+					if (event.key.code == sf::Keyboard::Right && field.IsDirectionPossible(Direction::Right)) { log.push_back(Direction::Right); field.Move(Direction::Right); }
+					if (event.key.code == sf::Keyboard::Up && field.IsDirectionPossible(Direction::Up)) { log.push_back(Direction::Up); field.Move(Direction::Up); }
+					if (event.key.code == sf::Keyboard::Down && field.IsDirectionPossible(Direction::Down)) { log.push_back(Direction::Down); field.Move(Direction::Down); }
 				}
 			}
 
@@ -72,7 +72,7 @@ int main()
 
 		if (counter > 0)
 		{
-			Field::Direction dir = (Field::Direction)(rand() % 4);
+			Direction dir = (Direction)(rand() % 4);
 			if (field.IsDirectionPossible(dir))
 			{
 				log.push_back(dir);
@@ -84,11 +84,11 @@ int main()
 		{
 			if (log.size() > 0)
 			{
-				Field::Direction dir = log.back();
-				if (dir == Field::Left) field.Move(Field::Right);
-				if (dir == Field::Right) field.Move(Field::Left);
-				if (dir == Field::Up) field.Move(Field::Down);
-				if (dir == Field::Down) field.Move(Field::Up);
+				Direction dir = log.back();
+				if (dir == Direction::Left) field.Move(Direction::Right);
+				if (dir == Direction::Right) field.Move(Direction::Left);
+				if (dir == Direction::Up) field.Move(Direction::Down);
+				if (dir == Direction::Down) field.Move(Direction::Up);
 				log.pop_back();
 			}
 			else mode_solve = false;

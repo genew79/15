@@ -88,10 +88,10 @@ void Field::Move(Direction direction)
 	int col = empty_index % 4;
 	int row = empty_index / 4;
 
-	if (direction == Field::Left && col < 3) move_index = empty_index + 1;
-	if (direction == Field::Right && col > 0) move_index = empty_index - 1;
-	if (direction == Field::Up && row < 3) move_index = empty_index + 4;
-	if (direction == Field::Down && row > 0) move_index = empty_index - 4;
+	if (direction == Direction::Left && col < 3) move_index = empty_index + 1;
+	if (direction == Direction::Right && col > 0) move_index = empty_index - 1;
+	if (direction == Direction::Up && row < 3) move_index = empty_index + 4;
+	if (direction == Direction::Down && row > 0) move_index = empty_index - 4;
 	SwapElements(empty_index, move_index);
 }
 
@@ -114,14 +114,14 @@ bool Field::Check() const
 	return true;
 }
 
-bool Field::IsDirectionPossible(Field::Direction direction)
+bool Field::IsDirectionPossible(Direction direction)
 {
 	int empty_index = GetEmptyIndex();
 	int col = empty_index % 4;
 	int row = empty_index / 4;
 	return
-		direction == Field::Left && col < 3 ||
-		direction == Field::Right && col > 0 ||
-		direction == Field::Up && row < 3 ||
-		direction == Field::Down && row > 0;
+		direction == Direction::Left && col < 3 ||
+		direction == Direction::Right && col > 0 ||
+		direction == Direction::Up && row < 3 ||
+		direction == Direction::Down && row > 0;
 }

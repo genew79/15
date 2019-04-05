@@ -1,7 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-const int FIELD_SIZE = 16;
+const int ROWS = 4;
+const int COLS = 4;
+const int FIELD_SIZE = ROWS * COLS;
+enum class Direction { Left = 0, Right = 1, Up = 2, Down = 3 };
 
 class Field : public sf::Drawable, public sf::Transformable
 {
@@ -10,8 +13,6 @@ protected:
 	int cell_size = 120;
 	int elements[FIELD_SIZE];
 	sf::Color color;
-public:
-	enum Direction { Left = 0, Right = 1, Up = 2, Down = 3 };
 public:
 	Field();
 	~Field();
@@ -23,5 +24,5 @@ public:
 	void Move(Direction direction);
 	void SwapElements(int index1, int index2);
 	bool Check() const;
-	bool IsDirectionPossible(Field::Direction dir);
+	bool IsDirectionPossible(Direction dir);
 };
