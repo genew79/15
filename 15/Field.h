@@ -12,7 +12,6 @@ protected:
 	sf::Vector2i size;
 	int cell_size = 120;
 	int elements[FIELD_SIZE];
-	sf::Color color;
 public:
 	Field();
 	~Field();

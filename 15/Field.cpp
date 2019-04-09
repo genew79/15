@@ -3,7 +3,6 @@
 
 Field::Field()
 {
-	color = sf::Color(200, 100, 200);
 	for (int i = 0; i < FIELD_SIZE - 1; i++) elements[i] = i + 1;
 	elements[FIELD_SIZE - 1] = 0;
 }
@@ -28,7 +27,8 @@ int Field::GetElementIndex(sf::Vector2i position)
 
 void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	sf::Text text;
+	sf::Color color = sf::Color(200, 100, 200);
+
 	sf::RectangleShape shape(sf::Vector2f(1.f * size.x, 1.f * size.y));
 	states.transform *= getTransform();
 	shape.setOutlineThickness(2.f);
@@ -36,16 +36,17 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	shape.setFillColor(sf::Color::Transparent);
 	target.draw(shape, states);
 
-	bool check = Check();
 	shape.setSize(sf::Vector2f(118.f, 118.f));
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
 	shape.setFillColor(sf::Color::Transparent);
 
+	sf::Text text;
 	text.setFont(Assets::Instance().font);
 	text.setCharacterSize(52);
 	text.setFillColor(color);
 
+	bool check = Check();
 	for (unsigned int i = 0; i < FIELD_SIZE; i++)
 	{
 		shape.setOutlineColor(color);
