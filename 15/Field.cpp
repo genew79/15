@@ -2,6 +2,7 @@
 
 Field::Field()
 {
+	// Подгружаем шрифт для отрисовки элементов
 	font.loadFromFile("calibri.ttf");
 	Init();
 }
@@ -9,21 +10,21 @@ Field::Field()
 void Field::Init()
 {
 	// Заполняем массив плашек
-	for (int i = 0; i < FIELD_SIZE - 1; i++) elements[i] = i + 1;
-	elements[FIELD_SIZE - 1] = 0;	// Пустая плашка имеет значение = 0
+	for (int i = 0; i < ARRAY_SIZE - 1; i++) elements[i] = i + 1;
+	elements[ARRAY_SIZE - 1] = 0;	// Пустая плашка имеет значение = 0
 }
 
 int Field::GetEmptyIndex() const
 {
 	// Ищем индекс пустой плашки
-	for (unsigned int i = 0; i < FIELD_SIZE; i++) if (elements[i] == 0) return i;
+	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] == 0) return i;
 	return -1;
 }
 
 sf::Vector2f Field::GetElementPosition(int index) const
 {
 	// Вычисление позиции плашки для отрисовки
-	return sf::Vector2f(index % SIZE * 120.f + 10.f, index / SIZE * 120.f + 10.f);
+	return sf::Vector2f(index % SIZE * CELL_SIZE + 10.f, index / SIZE * CELL_SIZE + 10.f);
 }
 
 void Field::Move(Direction direction)
@@ -53,7 +54,7 @@ void Field::Move(Direction direction)
 bool Field::Check() const
 {
 	// Проверка собранности головоломки
-	for (unsigned int i = 0; i < FIELD_SIZE; i++) if (elements[i] > 0 && elements[i] != i + 1) return false;
+	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] > 0 && elements[i] != i + 1) return false;
 	return true;
 }
 
@@ -62,7 +63,7 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	sf::Color color = sf::Color(200, 100, 200);
 
 	// Рисуем рамку игрового поля
-	sf::RectangleShape shape(sf::Vector2f(500.f, 500.f));
+	sf::RectangleShape shape(sf::Vector2f(FIELD_SIZE, FIELD_SIZE));
 	states.transform *= getTransform();
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
@@ -70,7 +71,7 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(shape, states);
 
 	// Подготавливаем рамку для отрисовки всех плашек
-	shape.setSize(sf::Vector2f(118.f, 118.f));
+	shape.setSize(sf::Vector2f(CELL_SIZE - 2, CELL_SIZE - 2));
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
 	shape.setFillColor(sf::Color::Transparent);
@@ -79,7 +80,7 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	sf::Text text("", font, 52);
 
 	bool check = Check();	// Проверка на то, что все плашки на своих местах
-	for (unsigned int i = 0; i < FIELD_SIZE; i++)
+	for (unsigned int i = 0; i < ARRAY_SIZE; i++)
 	{
 		shape.setOutlineColor(color);
 		text.setFillColor(color);
@@ -92,7 +93,8 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 		else if (elements[i] == i + 1)
 		{
-			text.setFillColor(sf::Color::Green);	// Номера плашек на своих местах выделяем цветом
+			// Номера плашек на своих местах выделяем цветом
+			text.setFillColor(sf::Color::Green);
 		}
 
 		// Рисуем все плашки, кроме пустой
