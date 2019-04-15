@@ -12,11 +12,11 @@ class Game : public sf::Drawable, public sf::Transformable
 protected:
 	int elements[ARRAY_SIZE];
 	sf::Font font;
+	int empty_index;
 public:
 	Game();
 	~Game() {};
 	void Init();
-	int GetEmptyIndex() const;
 	sf::Vector2f GetElementPosition(int index) const;
 	void Move(Direction direction);
 	bool Check() const;

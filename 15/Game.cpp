@@ -11,14 +11,9 @@ void Game::Init()
 {
 	// Заполняем массив плашек
 	for (int i = 0; i < ARRAY_SIZE - 1; i++) elements[i] = i + 1;
-	elements[ARRAY_SIZE - 1] = 0;	// Пустая плашка имеет значение = 0
-}
-
-int Game::GetEmptyIndex() const
-{
-	// Ищем индекс пустой плашки
-	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] == 0) return i;
-	return -1;
+	// Ставим пустую плашку в правую нижнюю позицию
+	empty_index = ARRAY_SIZE - 1;
+	elements[empty_index] = 0;	// Пустая плашка имеет значение = 0
 }
 
 sf::Vector2f Game::GetElementPosition(int index) const
@@ -32,7 +27,6 @@ void Game::Move(Direction direction)
 	// Перемещение плашки
 	int move_index = -1;
 	// Вычисляем строку и колонку пустой плашки
-	int empty_index = GetEmptyIndex();
 	int col = empty_index % SIZE;
 	int row = empty_index / SIZE;
 
@@ -48,6 +42,7 @@ void Game::Move(Direction direction)
 		int tmp = elements[empty_index];
 		elements[empty_index] = elements[move_index];
 		elements[move_index] = tmp;
+		empty_index = move_index;
 	}
 }
 
