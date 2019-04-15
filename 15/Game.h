@@ -17,7 +17,6 @@ public:
 	Game();
 	~Game() {};
 	void Init();
-	sf::Vector2f GetElementPosition(int index) const;
 	void Move(Direction direction);
 	bool Check() const;
 public:

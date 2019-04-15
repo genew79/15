@@ -16,12 +16,6 @@ void Game::Init()
 	elements[empty_index] = 0;	// Пустая плашка имеет значение = 0
 }
 
-sf::Vector2f Game::GetElementPosition(int index) const
-{
-	// Вычисление позиции плашки для отрисовки
-	return sf::Vector2f(index % SIZE * CELL_SIZE + 10.f, index / SIZE * CELL_SIZE + 10.f);
-}
-
 void Game::Move(Direction direction)
 {
 	// Перемещение плашки
@@ -95,7 +89,8 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		// Рисуем все плашки, кроме пустой
 		if (elements[i] > 0)
 		{
-			sf::Vector2f position = GetElementPosition(i);
+			// Вычисление позиции плашки для отрисовки
+			sf::Vector2f position(i % SIZE * CELL_SIZE + 10.f, i / SIZE * CELL_SIZE + 10.f);
 			shape.setPosition(position);
 			text.setPosition(position.x + 30.f + (elements[i] < 10 ? 15.f : 0.f), position.y + 25.f);	// Позицию текста подбирал вручную
 			target.draw(shape, states);

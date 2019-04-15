@@ -14,7 +14,7 @@ namespace UnitTest1
 			Game game;
 			Assert::AreEqual(game.Check(), true);
 		}
-
+/*
 		TEST_METHOD(TestGetElementPosition)
 		{
 			Game gane;
@@ -30,5 +30,6 @@ namespace UnitTest1
 			Assert::AreEqual(10.f, gane.GetElementPosition(2).y, L"Element 2 coordinate Y failed");
 			Assert::AreEqual(10.f, gane.GetElementPosition(3).y, L"Element 3 coordinate Y failed");
 		}
+*/
 	};
 }
