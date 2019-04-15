@@ -7,14 +7,14 @@ const int FIELD_SIZE = 500;
 const int CELL_SIZE = 120;
 enum class Direction { Left = 0, Right = 1, Up = 2, Down = 3 };
 
-class Field : public sf::Drawable, public sf::Transformable
+class Game : public sf::Drawable, public sf::Transformable
 {
 protected:
 	int elements[ARRAY_SIZE];
 	sf::Font font;
 public:
-	Field();
-	~Field() {};
+	Game();
+	~Game() {};
 	void Init();
 	int GetEmptyIndex() const;
 	sf::Vector2f GetElementPosition(int index) const;

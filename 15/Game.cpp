@@ -1,33 +1,33 @@
-#include "Field.h"
+#include "Game.h"
 
-Field::Field()
+Game::Game()
 {
 	// Подгружаем шрифт для отрисовки элементов
 	font.loadFromFile("calibri.ttf");
 	Init();
 }
 
-void Field::Init()
+void Game::Init()
 {
 	// Заполняем массив плашек
 	for (int i = 0; i < ARRAY_SIZE - 1; i++) elements[i] = i + 1;
 	elements[ARRAY_SIZE - 1] = 0;	// Пустая плашка имеет значение = 0
 }
 
-int Field::GetEmptyIndex() const
+int Game::GetEmptyIndex() const
 {
 	// Ищем индекс пустой плашки
 	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] == 0) return i;
 	return -1;
 }
 
-sf::Vector2f Field::GetElementPosition(int index) const
+sf::Vector2f Game::GetElementPosition(int index) const
 {
 	// Вычисление позиции плашки для отрисовки
 	return sf::Vector2f(index % SIZE * CELL_SIZE + 10.f, index / SIZE * CELL_SIZE + 10.f);
 }
 
-void Field::Move(Direction direction)
+void Game::Move(Direction direction)
 {
 	// Перемещение плашки
 	int move_index = -1;
@@ -51,14 +51,14 @@ void Field::Move(Direction direction)
 	}
 }
 
-bool Field::Check() const
+bool Game::Check() const
 {
 	// Проверка собранности головоломки
 	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] > 0 && elements[i] != i + 1) return false;
 	return true;
 }
 
-void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	sf::Color color = sf::Color(200, 100, 200);
 

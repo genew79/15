@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Field.h"
+#include "Game.h"
 
 int main()
 {
@@ -16,8 +16,8 @@ int main()
 	text.setPosition(5.f, 5.f);
 
 	// Создаем объект игры
-	Field field;
-	field.setPosition(50.f, 50.f);
+	Game game;
+	game.setPosition(50.f, 50.f);
 
 	sf::Event event;
 	int move_counter = 0;	// Счетчик случайных ходов для перемешивания головоломки
@@ -31,25 +31,25 @@ int main()
 			{
 				// Получаем нажатую клавишу - выполняем соответствующее действие
 				if (event.key.code == sf::Keyboard::Escape) window.close();
-				if (event.key.code == sf::Keyboard::Left) field.Move(Direction::Left);
-				if (event.key.code == sf::Keyboard::Right) field.Move(Direction::Right);
-				if (event.key.code == sf::Keyboard::Up) field.Move(Direction::Up);
-				if (event.key.code == sf::Keyboard::Down) field.Move(Direction::Down);
+				if (event.key.code == sf::Keyboard::Left) game.Move(Direction::Left);
+				if (event.key.code == sf::Keyboard::Right) game.Move(Direction::Right);
+				if (event.key.code == sf::Keyboard::Up) game.Move(Direction::Up);
+				if (event.key.code == sf::Keyboard::Down) game.Move(Direction::Down);
 				// Новая игра
 				if (event.key.code == sf::Keyboard::F2)
 				{
-					field.Init();
+					game.Init();
 					move_counter = 100;
 				}
 			}
 		}
 
 		// Если счетчик ходов больше нуля, продолжаем перемешивать головоломку
-		if (move_counter-- > 0) field.Move((Direction)(rand() % 4));
+		if (move_counter-- > 0) game.Move((Direction)(rand() % 4));
 
 		// Выполняем необходимые действия по отрисовке
 		window.clear();
-		window.draw(field);
+		window.draw(game);
 		window.draw(text);
 		window.display();
 	}
