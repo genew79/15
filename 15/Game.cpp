@@ -14,17 +14,27 @@ void Game::Init()
 	// Ставим пустую плашку в правую нижнюю позицию
 	empty_index = ARRAY_SIZE - 1;
 	elements[empty_index] = 0;	// Пустая плашка имеет значение = 0
+	solved = true;
+}
+
+bool Game::Check()
+{
+	// Проверка собранности головоломки
+	for (unsigned int i = 0; i < ARRAY_SIZE; i++)
+	{
+		if (elements[i] > 0 && elements[i] != i + 1) return false;
+	}
+	return true;
 }
 
 void Game::Move(Direction direction)
 {
-	// Перемещение плашки
-	int move_index = -1;
 	// Вычисляем строку и колонку пустой плашки
 	int col = empty_index % SIZE;
 	int row = empty_index / SIZE;
 
 	// Проверка на возможность перемещения и вычисление индекса перемещаемой плашки
+	int move_index = -1;
 	if (direction == Direction::Left && col < (SIZE - 1)) move_index = empty_index + 1;
 	if (direction == Direction::Right && col > 0) move_index = empty_index - 1;
 	if (direction == Direction::Up && row < (SIZE - 1)) move_index = empty_index + SIZE;
@@ -38,13 +48,7 @@ void Game::Move(Direction direction)
 		elements[move_index] = tmp;
 		empty_index = move_index;
 	}
-}
-
-bool Game::Check() const
-{
-	// Проверка собранности головоломки
-	for (unsigned int i = 0; i < ARRAY_SIZE; i++) if (elements[i] > 0 && elements[i] != i + 1) return false;
-	return true;
+	solved = Check();
 }
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -68,13 +72,12 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	// Подготавливаем текстовую заготовку для отрисовки номеров плашек
 	sf::Text text("", font, 52);
 
-	bool check = Check();	// Проверка на то, что все плашки на своих местах
 	for (unsigned int i = 0; i < ARRAY_SIZE; i++)
 	{
 		shape.setOutlineColor(color);
 		text.setFillColor(color);
 		text.setString(std::to_string(elements[i]));
-		if (check)
+		if (solved)
 		{
 			// Решенную головоломку выделяем другим цветом
 			shape.setOutlineColor(sf::Color::Cyan);
@@ -92,7 +95,8 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			// Вычисление позиции плашки для отрисовки
 			sf::Vector2f position(i % SIZE * CELL_SIZE + 10.f, i / SIZE * CELL_SIZE + 10.f);
 			shape.setPosition(position);
-			text.setPosition(position.x + 30.f + (elements[i] < 10 ? 15.f : 0.f), position.y + 25.f);	// Позицию текста подбирал вручную
+			// Позицию текста подбирал вручную
+			text.setPosition(position.x + 30.f + (elements[i] < 10 ? 15.f : 0.f), position.y + 25.f);
 			target.draw(shape, states);
 			target.draw(text, states);
 		}
