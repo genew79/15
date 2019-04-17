@@ -53,11 +53,11 @@ void Game::Move(Direction direction)
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
 	sf::Color color = sf::Color(200, 100, 200);
 
 	// Рисуем рамку игрового поля
 	sf::RectangleShape shape(sf::Vector2f(FIELD_SIZE, FIELD_SIZE));
-	states.transform *= getTransform();
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
 	shape.setFillColor(sf::Color::Transparent);
