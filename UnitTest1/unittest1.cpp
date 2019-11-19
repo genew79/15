@@ -1,5 +1,5 @@
 #include "CppUnitTest.h"
-#include "../15/Game.h"
+#include "../15/GameModel.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -11,7 +11,7 @@ namespace UnitTest1
 		
 		TEST_METHOD(TestCheckElements)
 		{
-			Game game;
+			GameModel game;
 			Assert::AreEqual(game.Check(), true);
 		}
 /*

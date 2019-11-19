@@ -131,12 +131,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="GameModel.cpp" />
+    <ClCompile Include="GameRender.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameController.h" />
+    <ClInclude Include="GameModel.h" />
+    <ClInclude Include="GameRender.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
